@@ -6,7 +6,7 @@ class Investory extends React.Component {
     return (
       <div>
         <h2>Investory</h2>
-        <AddFishForm/>
+        <AddFishForm addFish={this.props.addFish}/>
       </div>
     );
   }
