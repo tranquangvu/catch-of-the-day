@@ -7,6 +7,7 @@ class Investory extends React.Component {
       <div>
         <h2>Investory</h2>
         <AddFishForm addFish={this.props.addFish}/>
+        <button onClick={this.props.loadSample}>Load Sample Fishes</button>
       </div>
     );
   }
