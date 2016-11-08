@@ -41,4 +41,11 @@ class Investory extends React.Component {
   }
 }
 
+Investory.propTypes = {
+  fishes: React.PropTypes.object.isRequired,
+  updateFish: React.PropTypes.func,
+  removeFish: React.PropTypes.func,
+  addFish: React.PropTypes.func
+}
+
 export default Investory;

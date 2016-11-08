@@ -21,4 +21,16 @@ class Fish extends React.Component {
   }
 }
 
+Fish.propTypes = {
+  details: React.PropTypes.shape({
+    name: React.PropTypes.string,
+    price: React.PropTypes.number,
+    status: React.PropTypes.string,
+    desc: React.PropTypes.string,
+    image: React.PropTypes.string
+  }).isRequired,
+  index: React.PropTypes.string.isRequired,
+  addToOrder: React.PropTypes.func.isRequired
+}
+
 export default Fish;
