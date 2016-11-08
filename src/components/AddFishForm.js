@@ -6,7 +6,7 @@ class AddFishForm extends React.Component {
 
     const fish = {
       name: this.name.value,
-      price: this.price.value,
+      price: parseInt(this.price.value, 10),
       status: this.status.value,
       desc: this.desc.value,
       image: this.image.value
@@ -20,7 +20,7 @@ class AddFishForm extends React.Component {
     return (
       <form ref={(input) => this.fishForm = input} className='fish-edit' onSubmit={(e) => this.createFish(e)}>
         <input ref={(input) => this.name = input} type='text' placeholder='Fish Name'/>
-        <input ref={(input) => this.price = input} type='text' placeholder='Fish Price'/>
+        <input ref={(input) => this.price = input} type='number' placeholder='Fish Price'/>
         <select ref={(input) => this.status = input}>
           <option value='available'>Fresh!</option>
           <option value='unavailable'>Sold Out!</option>
