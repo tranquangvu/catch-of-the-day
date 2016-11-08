@@ -68,9 +68,6 @@ class Investory extends React.Component {
         <button className='facebook' onClick={() => this.authenticate('facebook')}>
           Login With Facebook
         </button>
-        <button className='twitter' onClick={() => this.authenticate('twitter')}>
-          Login With Facebook
-        </button>
       </nav>
     );
   }
