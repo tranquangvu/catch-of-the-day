@@ -24,6 +24,7 @@ class Investory extends React.Component {
         </select>
         <textarea type='text' name='desc' placeholder='Fish Desc' value={fish.desc} onChange={(e) => this.handleChange(e, key)}/>
         <input type='text' name='image' placeholder='Fish Image' value={fish.image} onChange={(e) => this.handleChange(e, key)}/>
+        <button onClick={() => this.props.removeFish(key)}>DELETE</button>
       </div>
     );
   }

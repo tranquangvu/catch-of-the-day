@@ -52,6 +52,12 @@ class App extends React.Component {
     this.setState({ fishes }); 
   }
 
+  removeFish(key) {
+    const fishes = {...this.state.fishes};
+    fishes[key] = null;
+    this.setState({ fishes }); 
+  }
+
   componentWillUpdate(nextProps, nextState) {
     localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order));
   }
@@ -87,7 +93,7 @@ class App extends React.Component {
           </ul>
         </div>
         <Order fishes={this.state.fishes} order={this.state.order} params={this.props.params}/>
-        <Investory addFish={(fish) => this.addFish(fish)} loadSample={() => this.loadSample()} fishes={this.state.fishes} updateFish={(key, fish) => this.updateFish(key, fish)}/>
+        <Investory addFish={(fish) => this.addFish(fish)} loadSample={() => this.loadSample()} fishes={this.state.fishes} updateFish={(key, fish) => this.updateFish(key, fish)} removeFish={(key) => this.removeFish(key)}/>
       </div>
     );
   }
