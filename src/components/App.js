@@ -24,7 +24,7 @@ class App extends React.Component {
     });
 
     const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`);
-    
+
     if (localStorageRef) {
       this.setState({
         order: JSON.parse(localStorageRef)
@@ -43,6 +43,13 @@ class App extends React.Component {
     fishes[`fish-${timestamp}`] = fish;
 
     this.setState({ fishes });
+  }
+
+  updateFish(key, updatedFish){
+    const fishes = {...this.state.fishes};
+
+    fishes[key] = updatedFish
+    this.setState({ fishes }); 
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -72,15 +79,15 @@ class App extends React.Component {
               Object
                 .keys(this.state.fishes)
                 .map(key => <Fish key={key} 
-                                  details={this.state.fishes[key]}
-                                  index={key}
-                                  addToOrder={(key) => this.addToOrder(key)}
+                              details={this.state.fishes[key]}
+                              index={key}
+                              addToOrder={(key) => this.addToOrder(key)}
                             />)
             }
           </ul>
         </div>
         <Order fishes={this.state.fishes} order={this.state.order} params={this.props.params}/>
-        <Investory addFish={(fish) => this.addFish(fish)} loadSample={() => this.loadSample()}/>
+        <Investory addFish={(fish) => this.addFish(fish)} loadSample={() => this.loadSample()} fishes={this.state.fishes} updateFish={(key, fish) => this.updateFish(key, fish)}/>
       </div>
     );
   }
