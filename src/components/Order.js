@@ -1,28 +1,27 @@
 import React from 'react';
-import Timer from './Timer';
+import { observer } from 'mobx-react';
 import { formatPrice } from '../helpers';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
-import { observer } from 'mobx-react';
 import orderStore from '../stores/OrderStore';
 import fishStore from '../stores/FishStore';
+import Timer from './Timer';
 
-@observer
-class Order extends React.Component {
-  renderOrder(key, storeId) {
-    const fish = fishStore.fishes[key]
-    const count = orderStore.order[key]
-    const removeButton = <button onClick={() => orderStore.removeFromOrder(key, storeId)}>&times;</button>
+@observer class Order extends React.Component {
+  renderOrder(fishId, storeId) {
+    const fish = fishStore.fishes[fishId]
+    const count = orderStore.order[fishId]
+    const removeButton = <button onClick={() => orderStore.removeFromOrder(storeId, fishId)}>&times;</button>
 
     if (!fish || fish.status === 'unavailable') {
       return (
-        <li key={key}>
+        <li key={fishId}>
           Sorry, {fish ? fish.name : 'fish'} is no longer available
         </li>
       );
     }
 
     return (
-      <li key={key}>
+      <li key={fishId}>
         <span>
           <CSSTransitionGroup
             component="span"
@@ -41,10 +40,10 @@ class Order extends React.Component {
   }
 
   render() {
-    const orderIds = Object.keys(orderStore.order);
-    const total = orderIds.reduce((prevTotal, key) => {
-      const fish = fishStore.fishes[key];
-      const count = orderStore.order[key];
+    const fishIds = Object.keys(orderStore.order);
+    const total = fishIds.reduce((prevTotal, fishId) => {
+      const fish = fishStore.fishes[fishId];
+      const count = orderStore.order[fishId];
 
       const isAvailable = fish && fish.status === 'available';
       if (isAvailable) {
@@ -64,7 +63,7 @@ class Order extends React.Component {
             transitionEnterTimeout={500}
             transitionLeaveTimeout={500}
           >
-          {orderIds.map((key) => this.renderOrder(key, this.props.storeId))}
+          {fishIds.map((fishId) => this.renderOrder(fishId, this.props.storeId))}
           <li className='total'>
             <strong>Total: </strong>
             {formatPrice(total)}

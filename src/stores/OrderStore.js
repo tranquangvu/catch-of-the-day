@@ -3,16 +3,16 @@ import { observable } from 'mobx';
 class OrderStore {
   @observable order = {}
 
-  addToOrder(key, orderId) {
+  addToOrder(orderId, fishId) {
     this.order = {
       ...this.order,
-      [key]: this.order[key] + 1 || 1
+      [fishId]: this.order[fishId] + 1 || 1
     }
     this.storeToLocalStorage(orderId, JSON.stringify(this.order))
   }
 
-  removeFromOrder(key, orderId){
-    delete this.order[key];
+  removeFromOrder(orderId, fishId) {
+    delete this.order[fishId];
     this.order = {...this.order};
     this.storeToLocalStorage(orderId, JSON.stringify(this.order))
   }
@@ -21,7 +21,7 @@ class OrderStore {
     localStorage.setItem(`order-${orderId}`, data);
   }
 
-  getFromLocalStorage(storeId) {
+  getOrderFromLocalStorage(storeId) {
     const data = localStorage.getItem(`order-${storeId}`);
     
     if (data) {

@@ -8,17 +8,15 @@ import Fish from './Fish';
 import orderStore from '../stores/OrderStore';
 import fishStore from '../stores/FishStore';
 
-@observer
-class App extends React.Component {
+@observer class App extends React.Component {
   componentWillMount() {
     const { storeId } = this.props.params;
     fishStore.loadFishes(storeId);
-    orderStore.getFromLocalStorage(storeId);
+    orderStore.getOrderFromLocalStorage(storeId);
   }
 
   componentWillUnmount() {
-    const { storeId } = this.props.params;
-    database.ref(`${storeId}/fishes`).off();
+    database.ref(`${this.props.params.storeId}/fishes`).off();
   }
 
   render() {
@@ -29,14 +27,9 @@ class App extends React.Component {
         <div className='menu'>
           <Header age="5000" cool={true} tagline='Fresh SeaFood Market'/>
           <ul className='list-of-fishes'>
-            { Object
-                .keys(fishStore.fishes)
-                .map(key => 
-                  <Fish key={key} 
-                    details={fishStore.fishes[key]}
-                    index={key}
-                    storeId={params.storeId}
-                  />)
+            { 
+              Object.keys(fishStore.fishes)
+                    .map(key => <Fish key={key} fishId={key} storeId={params.storeId}/>)
             }
           </ul>
         </div>

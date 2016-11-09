@@ -1,39 +1,33 @@
 import React from 'react';
-import { formatPrice } from '../helpers';
 import { observer } from 'mobx-react';
+import { formatPrice } from '../helpers';
 import orderStore from '../stores/OrderStore';
+import fishStore from '../stores/FishStore';
 
-@observer
-class Fish extends React.Component {
+@observer class Fish extends React.Component {
   render() {
-    const { details, index, storeId } = this.props
-    const isAvailable = details.status === 'available'
+    const { fishId, storeId } = this.props
+    const fish = fishStore.fishes[fishId]
+    const isAvailable = fish.status === 'available'
     const buttonText = isAvailable ? 'Add To Order' : 'Sold Out!'
 
     return (
       <li className='menu-fish'>
-        <img src={details.image} alt={details.name} />
+        <img src={fish.image} alt={fish.name} />
         <h3 className='fish-name'>
-          {details.name}
-          <span className='price'>{formatPrice(details.price)}</span>
+          {fish.name}
+          <span className='price'>{formatPrice(fish.price)}</span>
         </h3>
-        <p>{details.desc}</p>
-        <button disabled={!isAvailable} onClick={() => orderStore.addToOrder(index, storeId)}>{buttonText}</button>
+        <p>{fish.desc}</p>
+        <button disabled={!isAvailable} onClick={() => orderStore.addToOrder(storeId, fishId)}>{buttonText}</button>
       </li>
     );
   }
 }
 
 Fish.propTypes = {
-  details: React.PropTypes.shape({
-    name: React.PropTypes.string,
-    price: React.PropTypes.number,
-    status: React.PropTypes.string,
-    desc: React.PropTypes.string,
-    image: React.PropTypes.string,
-  }).isRequired,
-  index: React.PropTypes.string.isRequired,
-  storeId: React.PropTypes.string
+  fishId: React.PropTypes.string.isRequired,
+  storeId: React.PropTypes.string.isRequired
 }
 
 export default Fish;
