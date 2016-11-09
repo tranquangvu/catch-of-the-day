@@ -5,8 +5,8 @@ import Investory from './Investory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
 import { database } from '../firebase';
-import orderStore from '../stores/OrderStore';
 import { observer } from 'mobx-react';
+import orderStore from '../stores/OrderStore';
 
 @observer
 class App extends React.Component {
