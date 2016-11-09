@@ -51,6 +51,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "firebase": "^3.6.0",
     "history": "4.2.0",
     "re-base": "2.2.0",
     "react": "15.3.2",
