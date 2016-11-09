@@ -79,7 +79,7 @@ import fishStore from '../stores/FishStore';
     const fish = fishStore.fishes[key];
     const updatedFish = {
       ...fish,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value
     }
     fishStore.updateFish(storeId, key, updatedFish);
   }
@@ -98,7 +98,7 @@ import fishStore from '../stores/FishStore';
           onChange={(e) => this.handleChange(e, storeId, key)}
         />
         <input
-          type='text'
+          type='number'
           name='price'
           placeholder='Fish Price'
           value={fish.price}
