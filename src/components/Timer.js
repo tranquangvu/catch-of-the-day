@@ -1,19 +1,12 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { observable } from 'mobx';
 
-class Timer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {secondsElapsed: 0};
-  }
-
-  tick() {
-    this.setState((prevState) => ({
-      secondsElapsed: prevState.secondsElapsed + 1
-    }));
-  }
+@observer class Timer extends React.Component {
+  @observable secondsElapsed = 0
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1000);
+    this.interval = setInterval(() => this.secondsElapsed++, 1000);
   }
 
   componentWillUnmount() {
@@ -22,7 +15,7 @@ class Timer extends React.Component {
 
   render() {
     return (
-      <div>Seconds Elapsed: {this.state.secondsElapsed}</div>
+      <div>Seconds Elapsed: {this.secondsElapsed}</div>
     );
   }
 }

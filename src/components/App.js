@@ -5,7 +5,10 @@ import Investory from './Investory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
 import { database } from '../firebase';
+import orderStore from '../stores/OrderStore';
+import { observer } from 'mobx-react';
 
+@observer
 class App extends React.Component {
   constructor() {
     super();
@@ -30,9 +33,7 @@ class App extends React.Component {
     const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`);
 
     if (localStorageRef) {
-      this.setState({
-        order: JSON.parse(localStorageRef)
-      });
+      orderStore.order = JSON.parse(localStorageRef)
     }
   }
 
@@ -73,10 +74,6 @@ class App extends React.Component {
     database.ref(`${storeId}/fishes/${key}`).remove();
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order));
-  }
-
   loadSample() {
     const { storeId } = this.props.params;
 
@@ -87,20 +84,8 @@ class App extends React.Component {
     database.ref(`${storeId}/fishes`).set(sampleFishes);
   }
 
-  addToOrder(key) {
-    const order = {...this.state.order};
-    order[key] = order[key] + 1 || 1;
-    this.setState({order});
-  }
-
-  removeFromOrder(key){
-    const order = {...this.state.order};
-    delete order[key];
-    this.setState({order});
-  }
-
   render() {
-    const { fishes, order } = this.state;
+    const { fishes } = this.state;
     const { params } = this.props;
 
     return (
@@ -114,16 +99,14 @@ class App extends React.Component {
                   <Fish key={key} 
                     details={fishes[key]}
                     index={key}
-                    addToOrder={(key) => this.addToOrder(key)}
+                    params={params}
                   />)
             }
           </ul>
         </div>
         <Order 
           fishes={fishes}
-          order={order}
           params={params}
-          removeFromOrder={(key) => this.removeFromOrder(key)}
         />
         <Investory
           addFish={(fish) => this.addFish(fish)}
