@@ -6,7 +6,7 @@ import orderStore from '../stores/OrderStore';
 @observer
 class Fish extends React.Component {
   render() {
-    const { details, index, params } = this.props
+    const { details, index, storeId } = this.props
     const isAvailable = details.status === 'available'
     const buttonText = isAvailable ? 'Add To Order' : 'Sold Out!'
 
@@ -18,7 +18,7 @@ class Fish extends React.Component {
           <span className='price'>{formatPrice(details.price)}</span>
         </h3>
         <p>{details.desc}</p>
-        <button disabled={!isAvailable} onClick={() => orderStore.addToOrder(index, params.storeId)}>{buttonText}</button>
+        <button disabled={!isAvailable} onClick={() => orderStore.addToOrder(index, storeId)}>{buttonText}</button>
       </li>
     );
   }
@@ -33,9 +33,7 @@ Fish.propTypes = {
     image: React.PropTypes.string,
   }).isRequired,
   index: React.PropTypes.string.isRequired,
-  params: React.PropTypes.shape({
-    storeId: React.PropTypes.string
-  })
+  storeId: React.PropTypes.string
 }
 
 export default Fish;

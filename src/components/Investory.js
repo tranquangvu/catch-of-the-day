@@ -2,8 +2,10 @@ import React from 'react';
 import AddFishForm from './AddFishForm';
 import firebase from 'firebase/app';
 import { database, auth } from '../firebase';
+import { observer } from 'mobx-react';
+import fishStore from '../stores/FishStore';
 
-class Investory extends React.Component {
+@observer class Investory extends React.Component {
   constructor() {
     super();
 
@@ -73,17 +75,18 @@ class Investory extends React.Component {
     );
   }
 
-  handleChange(e, key) {
-    const fish = this.props.fishes[key];
+  handleChange(e, storeId, key) {
+    const fish = fishStore.fishes[key];
     const updatedFish = {
       ...fish,
       [e.target.name]: e.target.value
     }
-    this.props.updateFish(key, updatedFish);
+    fishStore.updateFish(storeId, key, updatedFish);
   }
 
   renderInventory(key) {
-    const fish = this.props.fishes[key]
+    const { storeId } = this.props
+    const fish = fishStore.fishes[key]
 
     return (
       <div className='fish-edit' key={key}>
@@ -92,21 +95,21 @@ class Investory extends React.Component {
           name='name'
           placeholder='Fish Name'
           value={fish.name}
-          onChange={(e) => this.handleChange(e, key)}
+          onChange={(e) => this.handleChange(e, storeId, key)}
         />
         <input
           type='text'
           name='price'
           placeholder='Fish Price'
           value={fish.price}
-          onChange={(e) => this.handleChange(e, key)}
+          onChange={(e) => this.handleChange(e, storeId, key)}
         />
         <select
           type='text'
           name='status'
           placeholder='Fish status'
           value={fish.status}
-          onChange={(e) => this.handleChange(e, key)}
+          onChange={(e) => this.handleChange(e, storeId, key)}
         >
           <option value='available'>Fresh!</option>
           <option value='unavailable'>Sold Out!</option>
@@ -116,28 +119,31 @@ class Investory extends React.Component {
           name='desc'
           placeholder='Fish Desc'
           value={fish.desc}
-          onChange={(e) => this.handleChange(e, key)}
+          onChange={(e) => this.handleChange(e, storeId, key)}
         />
         <input
           type='text'
           name='image'
           placeholder='Fish Image'
           value={fish.image}
-          onChange={(e) => this.handleChange(e, key)}
+          onChange={(e) => this.handleChange(e, storeId, key)}
         />
-        <button onClick={() => this.props.removeFish(key)}>Remove</button>
+        <button onClick={() => fishStore.removeFish(storeId, key)}>Remove</button>
       </div>
     );
   }
 
   render() {
-    if(!this.state.uid) {
+    const { storeId } = this.props
+    const { uid, owner } = this.state
+
+    if(!uid) {
       return (
         <div>{this.renderLogin()}</div>
       );
     }
 
-    if(this.state.uid !== this.state.owner) {
+    if(uid !== owner) {
       return (
         <div>
           <p>Sorry you aren't the owner of this store!</p>
@@ -150,19 +156,15 @@ class Investory extends React.Component {
       <div>
         <h2>Investory</h2>
         <button onClick={() => this.logout()}>Log out</button>
-        {Object.keys(this.props.fishes).map((key) => this.renderInventory(key))}
-        <AddFishForm addFish={this.props.addFish}/>
-        <button onClick={this.props.loadSample}>Load Sample Fishes</button>
+        {Object.keys(fishStore.fishes).map((key) => this.renderInventory(key))}
+        <AddFishForm storeId={storeId}/>
+        <button onClick={() => fishStore.loadSample(storeId)}>Load Sample Fishes</button>
       </div>
     );
   }
 }
 
 Investory.propTypes = {
-  fishes: React.PropTypes.object.isRequired,
-  updateFish: React.PropTypes.func,
-  removeFish: React.PropTypes.func,
-  addFish: React.PropTypes.func,
   storeId: React.PropTypes.string
 }
 

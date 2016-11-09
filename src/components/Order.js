@@ -4,11 +4,12 @@ import { formatPrice } from '../helpers';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 import { observer } from 'mobx-react';
 import orderStore from '../stores/OrderStore';
+import fishStore from '../stores/FishStore';
 
 @observer
 class Order extends React.Component {
   renderOrder(key, storeId) {
-    const fish = this.props.fishes[key]
+    const fish = fishStore.fishes[key]
     const count = orderStore.order[key]
     const removeButton = <button onClick={() => orderStore.removeFromOrder(key, storeId)}>&times;</button>
 
@@ -42,7 +43,7 @@ class Order extends React.Component {
   render() {
     const orderIds = Object.keys(orderStore.order);
     const total = orderIds.reduce((prevTotal, key) => {
-      const fish = this.props.fishes[key];
+      const fish = fishStore.fishes[key];
       const count = orderStore.order[key];
 
       const isAvailable = fish && fish.status === 'available';
@@ -63,7 +64,7 @@ class Order extends React.Component {
             transitionEnterTimeout={500}
             transitionLeaveTimeout={500}
           >
-          {orderIds.map((key) => this.renderOrder(key, this.props.params.storeId))}
+          {orderIds.map((key) => this.renderOrder(key, this.props.storeId))}
           <li className='total'>
             <strong>Total: </strong>
             {formatPrice(total)}
@@ -76,10 +77,7 @@ class Order extends React.Component {
 }
 
 Order.propTypes = {
-  fishes: React.PropTypes.object.isRequired,
-  params: React.PropTypes.shape({
-    storeId: React.PropTypes.string
-  })
+  storeId: React.PropTypes.string
 }
 
 export default Order;

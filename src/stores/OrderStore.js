@@ -20,6 +20,14 @@ class OrderStore {
   storeToLocalStorage(orderId, data) {
     localStorage.setItem(`order-${orderId}`, data);
   }
+
+  getFromLocalStorage(storeId) {
+    const data = localStorage.getItem(`order-${storeId}`);
+    
+    if (data) {
+      this.order = JSON.parse(data)
+    }
+  }
 }
 
 const orderStore = new OrderStore();

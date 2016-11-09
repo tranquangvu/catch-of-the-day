@@ -1,7 +1,8 @@
 import React from 'react';
+import fishStore from '../stores/FishStore';
 
 class AddFishForm extends React.Component {
-  createFish(e) {
+  createFish(e, storeId) {
     e.preventDefault();
 
     const fish = {
@@ -12,13 +13,15 @@ class AddFishForm extends React.Component {
       image: this.image.value
     }
 
-    this.props.addFish(fish);
+    fishStore.addFish(storeId, fish);
     this.fishForm.reset();
   }
 
   render() {
+    const { storeId } = this.props
+
     return (
-      <form ref={(input) => this.fishForm = input} className='fish-edit' onSubmit={(e) => this.createFish(e)}>
+      <form ref={(input) => this.fishForm = input} className='fish-edit' onSubmit={(e) => this.createFish(e, storeId)}>
         <input
           type='text'
           placeholder='Fish Name'
@@ -49,7 +52,7 @@ class AddFishForm extends React.Component {
 }
 
 AddFishForm.propTypes = {
-  addFish: React.PropTypes.func.isRequired
+  storeId: React.PropTypes.string
 }
 
 export default AddFishForm;
